@@ -34,6 +34,8 @@ using namespace gl;
 
 // Include glfw3.h after our OpenGL definitions
 #include <GLFW/glfw3.h>
+#include <iostream>
+using namespace std;
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
@@ -41,6 +43,7 @@ using namespace gl;
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
+
 
 // Simple helper function to load an image into a OpenGL texture with common settings
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
@@ -73,6 +76,13 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_wid
     return true;
 }
 
+int my_image_width = 0;
+int my_image_height = 0;
+GLuint my_image_texture = 0;
+
+void load_pic(char* buf) {
+    LoadTextureFromFile(buf, &my_image_texture, &my_image_width, &my_image_height);
+}
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
@@ -101,17 +111,16 @@ int main(int, char**)
     //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
-
-    int my_image_width = 0;
-    int my_image_height = 0;
-    GLuint my_image_texture = 0;
-    bool ret = LoadTextureFromFile("icon.jpg", &my_image_texture, &my_image_width, &my_image_height);
-    IM_ASSERT(ret);
-
+  
+  
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Perspective solver", NULL, NULL);
-
-
+    GLFWwindow* window = glfwCreateWindow(300, 100, "Perspective solver", NULL, NULL);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    GLFWimage images[1]; 
+    images[0].pixels = stbi_load("icon.jpg", &images[0].width, &images[0].height, 0, 4); 
+    //rgba channels
+    glfwSetWindowIcon(window, 1, images);
+    stbi_image_free(images[0].pixels);
 
     if (window == NULL)
         return 1;
@@ -150,10 +159,22 @@ int main(int, char**)
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    bool show_demo_window = true;
-    bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+    bool show_start_window = true; 
+    bool show_picture_window = false; 
+    bool test_coord = true; 
+
+
+
+    ImVec2 pos; 
+    static char buf1[64] = "icon.jpg";
+    /*
+    int my_image_width = 0;
+    int my_image_height = 0;
+    GLuint my_image_texture = 0;
+    bool ret = LoadTextureFromFile("icon.jpg", &my_image_texture, &my_image_width, &my_image_height);
+    IM_ASSERT(ret);*/
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
@@ -169,40 +190,53 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-        if (show_demo_window)
-            ImGui::ShowDemoWindow(&show_demo_window);
-
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-        {
+        if(show_start_window){
             static float f = 0.0f;
             static int counter = 0;
+            ImGui::SetNextWindowPos(ImVec2(0, 0));
+            ImGui::SetNextWindowSize(ImVec2(300,100));
 
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Choose a file"); 
 
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Another Window", &show_another_window);
 
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+            ImGui::InputText("Enter a path", buf1, 64);
 
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
+            if (ImGui::Button("GO!")) {
+                show_picture_window = true; 
+                show_start_window = false;
+                load_pic(buf1);
+            }
 
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             ImGui::End();
         }
 
-        // 3. Show another simple window.
-        if (show_another_window)
-        {
-            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Hello from another window!");
-            if (ImGui::Button("Close Me"))
-                show_another_window = false;
+        if (show_picture_window) {
+            //E:\scale_2400.jpg
+            ImGuiWindowFlags window_flags = 0;
+            window_flags |= ImGuiWindowFlags_NoCollapse;
+            window_flags |= ImGuiWindowFlags_NoTitleBar;
+            window_flags |= ImGuiWindowFlags_NoResize;
+            window_flags |= ImGuiWindowFlags_NoScrollbar;
+            ImGui::SetNextWindowPos(ImVec2(0, 0));
+            ImGui::SetNextWindowSize(ImVec2(my_image_width, my_image_height));
+            glfwSetWindowSize(window, my_image_width, my_image_height);
+
+            ImGui::Begin("OpenGL Texture Text",NULL,window_flags);
+            ImGui::Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width/2, my_image_height/2));
+            if (ImGui::IsItemClicked())
+            {
+                ImGuiStyle& style = ImGui::GetStyle();
+                ImVec2 pos = ImGui::GetMousePos();
+                pos.x -= style.WindowPadding.x;
+                pos.y -= style.WindowPadding.y;
+                cout << "x: "<< pos.x <<"     y:" << pos.y << endl;
+            }
+            ImGui::End();
+        }
+
+        if (test_coord) {
+            ImGui::Begin("test");
             ImGui::End();
         }
 
@@ -228,3 +262,5 @@ int main(int, char**)
 
     return 0;
 }
+
+
