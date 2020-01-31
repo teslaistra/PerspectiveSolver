@@ -7,9 +7,12 @@
 #include "imgui_impl_opengl3.h"
 #include <stdio.h>
 
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+
 
 #define STB_IMAGE_IMPLEMENTATION
-
 #include "stb/stb_image.h"
 
 
@@ -35,7 +38,9 @@ using namespace gl;
 // Include glfw3.h after our OpenGL definitions
 #include <GLFW/glfw3.h>
 #include <iostream>
+
 using namespace std;
+using namespace cv;
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
@@ -76,13 +81,123 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_wid
     return true;
 }
 
+void BindCVMat2GLTexture(const Mat& image, GLuint& imageTexture)
+{
+    if (image.empty()) {
+        std::cout << "image empty" << std::endl;
+    }
+    else {
+        glEnable(GL_TEXTURE_2D); 
+
+        //glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+          glGenTextures(1, &imageTexture);
+        glBindTexture(GL_TEXTURE_2D, imageTexture);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        //Set texture clamping method
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+ /*
+        //
+*///cv::cvtColor(image, image, COLOR_RGB2BGR);
+        glTexImage2D(GL_TEXTURE_2D, // Type of texture
+            0, // Pyramid level (for mip-mapping) - 0 is the top level
+            GL_RGBA, // Internal colour format to convert to
+            image.cols, // Image width i.e. 640 for Kinect in standard mode
+            image.rows, // Image height i.e. 480 for Kinect in standard mode
+            0, // Border width in pixels (can either be 1 or 0)
+            GL_BGR, // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
+            GL_UNSIGNED_BYTE, // Image data type
+            image.ptr()); // The actual image data itself
+            //NULL);
+    }
+}
+
+bool OK(const char* text, char*& error) {
+
+    Mat test_read = imread(text);
+    std::string str(text);
+
+    if (str.empty()) {
+        error = "Empty path to image";
+        cout << error;
+        return false;
+    }
+    else if(test_read.empty()){
+        error = "Empty image. Failed to open.";
+        return false;
+    }
+    else {
+        error = "Ok";
+        return true;
+    }
+}
+
+void SortPoints(Point2f points[]) {
+
+    Point2f tmp(0,0);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 3; j >= (i + 1); j--) {
+            if (points[j].y < points[j - 1].y) {
+                tmp = points[j];
+                points[j] = points[j - 1];
+                points[j - 1] = tmp;
+            }
+        }
+    }
+   
+    if (points[0].x > points[1].x) {
+        tmp = points[1];
+        points[1] = points[0];
+        points[0] = tmp;
+    }
+
+    if (points[2].x > points[3].x) {
+        tmp = points[3];
+        points[3] = points[2];
+        points[2] = tmp;
+    }
+
+
+}
+
+float VectorLenght(int x1, int y1, int x2, int y2) {
+    return(sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)));
+
+}
+
+float CalcPicSize(Point2f points[]) {
+    int len = 0;
+    int minLen = VectorLenght(points[3].x, points[3].y, points[0].x, points[0].y);
+    for (size_t i = 0; i < 3; i++)
+    {
+        len = VectorLenght(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
+        cout << len << endl;
+        if (len > 10000 || len < -10000) {
+            cout << points[i].x << " " << points[i].y << " " << points[i + 1].x<<" "<< points[i + 1].y <<" i: "<<i+1 <<endl;
+        }
+        if (len <= minLen) minLen = len; 
+    }
+    cout << len << endl;
+   
+    cout << minLen << endl;
+
+    return minLen;
+}
+
+
 int my_image_width = 0;
 int my_image_height = 0;
 GLuint my_image_texture = 0;
 
-void load_pic(char* buf) {
-    LoadTextureFromFile(buf, &my_image_texture, &my_image_width, &my_image_height);
-}
+int my2_image_width = 0;
+int my2_image_height = 0;
+GLuint my2_image_texture;
+
+char* error1 = new char[16];
+
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
@@ -114,7 +229,7 @@ int main(int, char**)
   
   
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(300, 100, "Perspective solver", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(300, 75, "Perspective solver", NULL, NULL);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     GLFWimage images[1]; 
     images[0].pixels = stbi_load("icon.jpg", &images[0].width, &images[0].height, 0, 4); 
@@ -163,18 +278,20 @@ int main(int, char**)
 
     bool show_start_window = true; 
     bool show_picture_window = false; 
-    bool test_coord = true; 
 
+    int click_counter = 0; 
+    float SizeImg = 0; 
 
+    Point2f points[4] = { Point2f(0,0),Point2f(0,0),Point2f(0,0),Point2f(0,0) };
+    Point2f border[4] = { Point2f(0, 0),Point2f(500, 0), Point2f(0, 500), Point2f(500, 500) };
+
+    Mat CVimg;
+    Mat ClearCVimg;
 
     ImVec2 pos; 
     static char buf1[64] = "icon.jpg";
-    /*
-    int my_image_width = 0;
-    int my_image_height = 0;
-    GLuint my_image_texture = 0;
-    bool ret = LoadTextureFromFile("icon.jpg", &my_image_texture, &my_image_width, &my_image_height);
-    IM_ASSERT(ret);*/
+    
+    char* error1 = new char[16];
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
@@ -192,20 +309,52 @@ int main(int, char**)
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
         if(show_start_window){
-            static float f = 0.0f;
-            static int counter = 0;
+
+            //флаги оформления стартовой страницы
+            
+             ImGuiWindowFlags window_flags = 0;
+
+             window_flags |= ImGuiWindowFlags_NoCollapse;
+             window_flags |= ImGuiWindowFlags_NoTitleBar;
+             window_flags |= ImGuiWindowFlags_NoResize;
+             window_flags |= ImGuiWindowFlags_NoScrollbar;
+       
+
+            //размер и позиция окна
             ImGui::SetNextWindowPos(ImVec2(0, 0));
-            ImGui::SetNextWindowSize(ImVec2(300,100));
+            ImGui::SetNextWindowSize(ImVec2(300,75));
 
-            ImGui::Begin("Choose a file"); 
+            ImGui::Begin("Choose a file", NULL, window_flags);
+       
+            if (ImGui::BeginPopupModal("empty", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+            {
+                ImGui::Text(error1);
+                ImGui::Separator();
 
+                if (ImGui::Button("OK", ImVec2(130, 0))) { ImGui::CloseCurrentPopup(); }
+                ImGui::SetItemDefaultFocus();
 
+                ImGui::EndPopup();
+            }
             ImGui::InputText("Enter a path", buf1, 64);
 
             if (ImGui::Button("GO!")) {
-                show_picture_window = true; 
-                show_start_window = false;
-                load_pic(buf1);
+
+                if (OK(buf1, error1)) {
+
+                    show_picture_window = true; 
+                    show_start_window = false;
+
+                    LoadTextureFromFile(buf1,&my_image_texture,&my_image_width,&my_image_height);
+                    LoadTextureFromFile(buf1, &my2_image_texture, &my2_image_width, &my2_image_height);
+
+                    CVimg = imread(buf1);
+                    ClearCVimg = imread(buf1);
+
+                }
+                else {
+                    ImGui::OpenPopup("empty");
+                }
             }
 
             ImGui::End();
@@ -213,30 +362,73 @@ int main(int, char**)
 
         if (show_picture_window) {
             //E:\scale_2400.jpg
+
+            ImGuiStyle& style = ImGui::GetStyle();
             ImGuiWindowFlags window_flags = 0;
+
             window_flags |= ImGuiWindowFlags_NoCollapse;
             window_flags |= ImGuiWindowFlags_NoTitleBar;
             window_flags |= ImGuiWindowFlags_NoResize;
             window_flags |= ImGuiWindowFlags_NoScrollbar;
             ImGui::SetNextWindowPos(ImVec2(0, 0));
-            ImGui::SetNextWindowSize(ImVec2(my_image_width, my_image_height));
-            glfwSetWindowSize(window, my_image_width, my_image_height);
-
+            ImGui::SetNextWindowSize(ImVec2(my_image_width*2, my_image_height + style.WindowPadding.y+20));
+            glfwSetWindowSize(window, my_image_width*2, my_image_height + style.WindowPadding.y+15);
+            
             ImGui::Begin("OpenGL Texture Text",NULL,window_flags);
-            ImGui::Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width/2, my_image_height/2));
+
+            ImGui::Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
+
             if (ImGui::IsItemClicked())
             {
-                ImGuiStyle& style = ImGui::GetStyle();
+                
                 ImVec2 pos = ImGui::GetMousePos();
                 pos.x -= style.WindowPadding.x;
                 pos.y -= style.WindowPadding.y;
                 cout << "x: "<< pos.x <<"     y:" << pos.y << endl;
-            }
-            ImGui::End();
-        }
 
-        if (test_coord) {
-            ImGui::Begin("test");
+                if (click_counter <= 3) {
+                 
+                    points[click_counter].x = pos.x;
+                    points[click_counter].y = pos.y;
+                    circle(CVimg, Point(pos.x, pos.y), 5, (0, 0, 255), -1);
+                    BindCVMat2GLTexture(CVimg, my_image_texture);
+                    click_counter++;
+                    if (click_counter == 4) {
+                        SortPoints(points);
+                        SizeImg = CalcPicSize(points);
+                        cout << SizeImg;
+                        click_counter = 0;
+                        Point2f border[4] = { Point2f(0, 0),Point2f(500, 0), Point2f(0, 500), Point2f(500, 500) };
+                        
+                        my2_image_height = SizeImg;
+                        my2_image_width = SizeImg;
+
+                        Mat mat = getPerspectiveTransform(points, border);
+                        Mat result;
+
+                        warpPerspective(ClearCVimg, result, mat, Size(500, 500));
+                        
+                        BindCVMat2GLTexture(result, my2_image_texture);
+                        BindCVMat2GLTexture(ClearCVimg, my_image_texture);
+                        CVimg = imread(buf1);
+
+                    }
+                }else
+                {
+                  //   click_counter = 1;
+                   //  CVimg = imread(buf1);
+                  //   circle(CVimg, Point(pos.x, pos.y), 5, (0, 0, 255), -1);
+                  //  BindCVMat2GLTexture(CVimg, my_image_texture);
+                  //   namedWindow("Image1");
+                  //   imshow("Image1", ClearCVimg);
+                     //Point2f points1[4] = { Point2f(470, 206),Point2f(1479, 198), Point2f(32, 1122), Point2f(1980, 1125) };
+                }
+                
+            }
+
+            ImGui::SameLine();
+            ImGui::Image((void*)(intptr_t)my2_image_texture, ImVec2(my2_image_width, my2_image_height));
+
             ImGui::End();
         }
 
