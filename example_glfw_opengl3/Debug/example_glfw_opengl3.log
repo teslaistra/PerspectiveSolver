@@ -1,2 +1,71 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(459,5): warning MSB8028: The intermediate directory (E:\programming\PerspectiveSolver\example_glfw_opengl3\Debug\) contains files shared from another project (example_glfw_opengl3.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  main.cpp
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(169,16): warning C4244: return: преобразование "double" в "float", возможна потеря данных
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(175,79): warning C4244: аргумент: преобразование "_Tp" в "int", возможна потеря данных
+          with
+          [
+              _Tp=float
+          ]
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(175,66): warning C4244: аргумент: преобразование "_Tp" в "int", возможна потеря данных
+          with
+          [
+              _Tp=float
+          ]
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(175,53): warning C4244: аргумент: преобразование "_Tp" в "int", возможна потеря данных
+          with
+          [
+              _Tp=float
+          ]
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(175,40): warning C4244: аргумент: преобразование "_Tp" в "int", возможна потеря данных
+          with
+          [
+              _Tp=float
+          ]
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(175,16): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(178,84): warning C4244: аргумент: преобразование "_Tp" в "int", возможна потеря данных
+          with
+          [
+              _Tp=float
+          ]
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(178,67): warning C4244: аргумент: преобразование "_Tp" в "int", возможна потеря данных
+          with
+          [
+              _Tp=float
+          ]
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(178,50): warning C4244: аргумент: преобразование "_Tp" в "int", возможна потеря данных
+          with
+          [
+              _Tp=float
+          ]
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(178,37): warning C4244: аргумент: преобразование "_Tp" в "int", возможна потеря данных
+          with
+          [
+              _Tp=float
+          ]
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(178,27): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(189,12): warning C4244: return: преобразование "int" в "float", возможна потеря данных
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(296,20): warning C4459: объявление "error1" скрывает глобальное объявление
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(201,7): message : см. объявление "error1"
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(376,59): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(377,112): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(381,84): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(381,68): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(386,30): warning C4456: объявление "pos" скрывает предыдущее локальное объявление
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(293,12): message : см. объявление "pos"
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(395,51): warning C4244: аргумент: преобразование "float" в "_Tp", возможна потеря данных
+          with
+          [
+              _Tp=int
+          ]
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(395,44): warning C4244: аргумент: преобразование "float" в "_Tp", возможна потеря данных
+          with
+          [
+              _Tp=int
+          ]
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(403,45): warning C4456: объявление "border" скрывает предыдущее локальное объявление
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(288,13): message : см. объявление "border"
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(416,44): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(417,43): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(437,86): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp(437,69): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
   example_glfw_opengl3.vcxproj -> E:\programming\PerspectiveSolver\example_glfw_opengl3\Debug\solver.exe

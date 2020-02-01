@@ -1,11 +1,10 @@
 project(solver C CXX)
 
+
 ################################################################################
 # Source groups
 ################################################################################
-set(no_group_source_files
-    "../README.txt"
-)
+
 source_group("" FILES ${no_group_source_files})
 
 set(gl3w
@@ -92,6 +91,7 @@ elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         "${CMAKE_CURRENT_SOURCE_DIR}/..;"
         "${CMAKE_CURRENT_SOURCE_DIR}/../libs/glfw/include;"
         "${CMAKE_CURRENT_SOURCE_DIR}/../libs/gl3w"
+	${OpenCV_INCLUDE_DIRS}
     )
 endif()
 
@@ -180,18 +180,18 @@ endif()
 if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "$<$<CONFIG:Debug>:"
-            "opencv_world420d"
         ">"
         "opengl32;"
         "glfw3"
+${OpenCV_LIBS}
     )
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "$<$<CONFIG:Debug>:"
-            "opencv_world420d"
         ">"
         "opengl32;"
         "glfw3"
+${OpenCV_LIBS}
     )
 endif()
 target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
@@ -203,6 +203,7 @@ if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
     target_link_directories(${PROJECT_NAME} PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}/../libs/glfw/lib-vc2010-64"
+	${OpenCV_INCLUDE_DIRS}
     )
 endif()
 

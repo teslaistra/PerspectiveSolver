@@ -46,7 +46,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>E:\opencv\opencv\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -56,7 +56,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>E:\opencv\opencv\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -76,7 +76,7 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageMessage.cmake;E:\opencv\opencv\build\OpenCVConfig-version.cmake;E:\opencv\opencv\build\OpenCVConfig.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVConfig.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules-debug.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules-release.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules.cmake;E:\programming\PerspectiveSolver\CMake\Default.cmake;E:\programming\PerspectiveSolver\CMake\DefaultCXX.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\programming\PerspectiveSolver\CMake\Default.cmake;E:\programming\PerspectiveSolver\CMake\DefaultCXX.cmake;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\programming\PerspectiveSolver\build\example_glfw_opengl3\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/programming/PerspectiveSolver/example_glfw_opengl3/CMakeLists.txt</Message>
@@ -89,7 +89,7 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageMessage.cmake;E:\opencv\opencv\build\OpenCVConfig-version.cmake;E:\opencv\opencv\build\OpenCVConfig.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVConfig.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules-debug.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules-release.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules.cmake;E:\programming\PerspectiveSolver\CMake\Default.cmake;E:\programming\PerspectiveSolver\CMake\DefaultCXX.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\programming\PerspectiveSolver\CMake\Default.cmake;E:\programming\PerspectiveSolver\CMake\DefaultCXX.cmake;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\programming\PerspectiveSolver\build\example_glfw_opengl3\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
     </CustomBuild>

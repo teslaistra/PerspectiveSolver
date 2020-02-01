@@ -82,8 +82,8 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>opencv_world420d.lib;opengl32.lib;glfw3.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>E:/programming/PerspectiveSolver/example_glfw_opengl3/../libs/glfw/lib-vc2010-64;E:/programming/PerspectiveSolver/example_glfw_opengl3/../libs/glfw/lib-vc2010-64/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:/programming/PerspectiveSolver/example_glfw_opengl3/../libs/glfw/lib-vc2010-64;E:/programming/PerspectiveSolver/example_glfw_opengl3/../libs/glfw/lib-vc2010-64/$(Configuration);E:/opencv/opencv/build/include;E:/opencv/opencv/build/include/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ImportLibrary>E:/programming/PerspectiveSolver/example_glfw_opengl3/Debug/solver.lib</ImportLibrary>
@@ -126,7 +126,7 @@
     </Midl>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;E:\opencv\opencv\build\x64\vc15\lib\opencv_world420.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>E:/programming/PerspectiveSolver/example_glfw_opengl3/../libs/glfw/lib-vc2010-64;E:/programming/PerspectiveSolver/example_glfw_opengl3/../libs/glfw/lib-vc2010-64/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:/programming/PerspectiveSolver/example_glfw_opengl3/../libs/glfw/lib-vc2010-64;E:/programming/PerspectiveSolver/example_glfw_opengl3/../libs/glfw/lib-vc2010-64/$(Configuration);E:/opencv/opencv/build/include;E:/opencv/opencv/build/include/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -151,7 +151,7 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageMessage.cmake;E:\opencv\opencv\build\OpenCVConfig-version.cmake;E:\opencv\opencv\build\OpenCVConfig.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVConfig.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules-debug.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules-release.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules.cmake;E:\programming\PerspectiveSolver\CMake\Default.cmake;E:\programming\PerspectiveSolver\CMake\DefaultCXX.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\programming\PerspectiveSolver\CMake\Default.cmake;E:\programming\PerspectiveSolver\CMake\DefaultCXX.cmake;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\programming\PerspectiveSolver\build\example_glfw_opengl3\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/programming/PerspectiveSolver/example_glfw_opengl3/CMakeLists.txt</Message>
@@ -164,12 +164,32 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.16\Modules\FindPackageMessage.cmake;E:\opencv\opencv\build\OpenCVConfig-version.cmake;E:\opencv\opencv\build\OpenCVConfig.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVConfig.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules-debug.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules-release.cmake;E:\opencv\opencv\build\x64\vc15\lib\OpenCVModules.cmake;E:\programming\PerspectiveSolver\CMake\Default.cmake;E:\programming\PerspectiveSolver\CMake\DefaultCXX.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\programming\PerspectiveSolver\CMake\Default.cmake;E:\programming\PerspectiveSolver\CMake\DefaultCXX.cmake;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\programming\PerspectiveSolver\build\example_glfw_opengl3\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="E:\programming\PerspectiveSolver\libs\gl3w\GL\gl3w.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClInclude Include="E:\programming\PerspectiveSolver\libs\gl3w\GL\gl3w.h" />
+    <ClInclude Include="E:\programming\PerspectiveSolver\libs\gl3w\GL\glcorearb.h" />
+    <ClInclude Include="E:\programming\PerspectiveSolver\imconfig.h" />
+    <ClInclude Include="E:\programming\PerspectiveSolver\imgui_internal.h" />
+    <ClCompile Include="E:\programming\PerspectiveSolver\imgui.cpp" />
+    <ClInclude Include="E:\programming\PerspectiveSolver\imgui.h" />
+    <ClCompile Include="E:\programming\PerspectiveSolver\imgui_demo.cpp" />
+    <ClCompile Include="E:\programming\PerspectiveSolver\imgui_draw.cpp" />
+    <ClCompile Include="E:\programming\PerspectiveSolver\imgui_widgets.cpp" />
+    <Natvis Include="E:\programming\PerspectiveSolver\misc\natvis\imgui.natvis" />
+    <ClCompile Include="E:\programming\PerspectiveSolver\imgui_impl_glfw.cpp" />
+    <ClInclude Include="E:\programming\PerspectiveSolver\imgui_impl_glfw.h" />
+    <ClCompile Include="E:\programming\PerspectiveSolver\imgui_impl_opengl3.cpp" />
+    <ClInclude Include="E:\programming\PerspectiveSolver\imgui_impl_opengl3.h" />
+    <ClInclude Include="E:\programming\PerspectiveSolver\libs\stb\stb.h" />
+    <ClInclude Include="E:\programming\PerspectiveSolver\libs\stb\stb_image.h" />
     <ClCompile Include="E:\programming\PerspectiveSolver\example_glfw_opengl3\main.cpp" />
   </ItemGroup>
   <ItemGroup>

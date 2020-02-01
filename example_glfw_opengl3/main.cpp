@@ -99,12 +99,14 @@ void BindCVMat2GLTexture(const Mat& image, GLuint& imageTexture)
         //Set texture clamping method
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
  /*
         //
 *///cv::cvtColor(image, image, COLOR_RGB2BGR);
         glTexImage2D(GL_TEXTURE_2D, // Type of texture
             0, // Pyramid level (for mip-mapping) - 0 is the top level
-            GL_RGBA, // Internal colour format to convert to
+            GL_RGB, // Internal colour format to convert to
             image.cols, // Image width i.e. 640 for Kinect in standard mode
             image.rows, // Image height i.e. 480 for Kinect in standard mode
             0, // Border width in pixels (can either be 1 or 0)
@@ -369,10 +371,10 @@ int main(int, char**)
             window_flags |= ImGuiWindowFlags_NoCollapse;
             window_flags |= ImGuiWindowFlags_NoTitleBar;
             window_flags |= ImGuiWindowFlags_NoResize;
-            window_flags |= ImGuiWindowFlags_NoScrollbar;
+           // window_flags |= ImGuiWindowFlags_NoScrollbar;
             ImGui::SetNextWindowPos(ImVec2(0, 0));
-            ImGui::SetNextWindowSize(ImVec2(my_image_width*2, my_image_height + style.WindowPadding.y+20));
-            glfwSetWindowSize(window, my_image_width*2, my_image_height + style.WindowPadding.y+15);
+            ImGui::SetNextWindowSize(ImVec2(my_image_width+my2_image_width, my_image_height + style.WindowPadding.y+20));
+            glfwSetWindowSize(window, my_image_width + my2_image_width, my_image_height + style.WindowPadding.y+15);
             
             ImGui::Begin("OpenGL Texture Text",NULL,window_flags);
 
@@ -400,14 +402,19 @@ int main(int, char**)
                         click_counter = 0;
                         Point2f border[4] = { Point2f(0, 0),Point2f(500, 0), Point2f(0, 500), Point2f(500, 500) };
                         
-                        my2_image_height = SizeImg;
-                        my2_image_width = SizeImg;
 
                         Mat mat = getPerspectiveTransform(points, border);
                         Mat result;
 
+                       
                         warpPerspective(ClearCVimg, result, mat, Size(500, 500));
-                        
+                       //  my2_image_height = result.rows;
+                      //  my2_image_width = result.cols;
+                        if (SizeImg < 100) {
+                            SizeImg *= 5;
+                        }
+                        my2_image_height = SizeImg;
+                        my2_image_width = SizeImg;
                         BindCVMat2GLTexture(result, my2_image_texture);
                         BindCVMat2GLTexture(ClearCVimg, my_image_texture);
                         CVimg = imread(buf1);

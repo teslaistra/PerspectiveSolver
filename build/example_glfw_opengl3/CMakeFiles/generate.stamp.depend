@@ -1,12 +1,4 @@
 # CMake generation dependency list for this directory.
-C:/Program Files/CMake/share/cmake-3.16/Modules/FindPackageHandleStandardArgs.cmake
-C:/Program Files/CMake/share/cmake-3.16/Modules/FindPackageMessage.cmake
-E:/opencv/opencv/build/OpenCVConfig-version.cmake
-E:/opencv/opencv/build/OpenCVConfig.cmake
-E:/opencv/opencv/build/x64/vc15/lib/OpenCVConfig.cmake
-E:/opencv/opencv/build/x64/vc15/lib/OpenCVModules-debug.cmake
-E:/opencv/opencv/build/x64/vc15/lib/OpenCVModules-release.cmake
-E:/opencv/opencv/build/x64/vc15/lib/OpenCVModules.cmake
 E:/programming/PerspectiveSolver/CMake/Default.cmake
 E:/programming/PerspectiveSolver/CMake/DefaultCXX.cmake
 E:/programming/PerspectiveSolver/example_glfw_opengl3/CMakeLists.txt
