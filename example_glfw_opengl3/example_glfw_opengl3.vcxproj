@@ -177,6 +177,7 @@
     <ClInclude Include="..\libs\gl3w\GL\glcorearb.h" />
     <ClInclude Include="..\libs\stb\stb.h" />
     <ClInclude Include="..\libs\stb\stb_image.h" />
+    <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\misc\natvis\imgui.natvis" />

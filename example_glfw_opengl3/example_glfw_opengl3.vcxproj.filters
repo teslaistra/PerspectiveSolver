@@ -69,6 +69,7 @@
     <ClInclude Include="..\libs\stb\stb_image.h">
       <Filter>sources</Filter>
     </ClInclude>
+    <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.txt" />
