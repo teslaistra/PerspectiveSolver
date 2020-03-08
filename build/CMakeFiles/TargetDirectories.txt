@@ -1,4 +1,0 @@
-E:/programming/PerspectiveSolver/build/CMakeFiles/ALL_BUILD.dir
-E:/programming/PerspectiveSolver/build/CMakeFiles/ZERO_CHECK.dir
-E:/programming/PerspectiveSolver/build/example_glfw_opengl3/CMakeFiles/solver.dir
-E:/programming/PerspectiveSolver/build/example_glfw_opengl3/CMakeFiles/ALL_BUILD.dir

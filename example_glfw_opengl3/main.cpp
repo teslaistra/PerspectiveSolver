@@ -35,6 +35,8 @@ using namespace gl;
 #include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 #endif
 
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+
 // Include glfw3.h after our OpenGL definitions
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -226,6 +228,14 @@ float CalcPicSize(Point2f points[]) //подсчет размера стороны картинки
     return minLen;
 }
 
+
+/*!
+Сохраняет исправенное изображение. 
+\param[in] text Путь, куда надо сохранять
+\param[in] result Исправленная картинка
+\param[in] save_counter порядковый номер картинки, которую будем сохранять
+\param[in] name Имя под которым надо сохранить картинку
+*/
 void Save(const char* text, Mat result, int& save_counter, string name = "SolvedImage") {
     string saveTo(text);//преобразуе из char в string
     string saveTo1 = saveTo+"/" + name + std::to_string(save_counter) + ".jpg"; //формируем название файла и путь сохранения
@@ -240,6 +250,18 @@ void Save(const char* text, Mat result, int& save_counter, string name = "Solved
         ImGui::OpenPopup("saveError");
     }
 }
+
+/*!
+Считает высоту окна, которая должна быть в данный момент 
+\param[in] left высота левой текстуры 
+\param[in] right высота правой текстуры
+\param[in] koef коэфициент масштабирования изображения для удобного отображения
+\returns Высоту окна
+*/
+float height(int& left, int& right, float& koef) {
+    if (left/koef > right/koef) return ((float)left) / koef;
+    else return right/koef; 
+}
 int my_image_width = 0;//!< Ширина левой картинки
 int my_image_height = 0;//!< Высота правой картинки
 GLuint my_image_texture = 0;//!< Текстура левой картинки(загруженного изображения)
@@ -249,7 +271,7 @@ int my2_image_height = 0;//!< Высота правой картинки
 GLuint my2_image_texture;//!< Текстура правой картинки(обработанного изображения)
 
 char* error1 = new char[16];//!<указатель на сообщение об ошибке
-static char buf1[64] = "icon.jpg";//!<путь до изображения
+static char buf1[64] = "";//!<путь до изображения
 int main(int, char**)
 {
     // Setup window
@@ -279,7 +301,7 @@ int main(int, char**)
     GLFWwindow* window = glfwCreateWindow(300, 75, "Perspective solver", NULL, NULL);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     GLFWimage images[1]; 
-    images[0].pixels = stbi_load("icon.jpg", &images[0].width, &images[0].height, 0, 4); 
+   images[0].pixels = stbi_load("icon.jpg", &images[0].width, &images[0].height, 0, 4); 
     //rgba channels
     glfwSetWindowIcon(window, 1, images);
     stbi_image_free(images[0].pixels);
@@ -342,9 +364,8 @@ int main(int, char**)
 
     ImVec2 pos; //!<позиция курсора при клике
     
-    char* where = new char[16];
-    where = "";
 
+    float koef = 1; //!< коэфициент масштабирования картинки, если она больше 1024px
     
     // Main loop
     while (!glfwWindowShouldClose(window))
@@ -394,19 +415,17 @@ int main(int, char**)
                     show_start_window = false;
 
                     std::string SaveTo(buf1);
-                    SaveTo = SaveTo.substr(0, SaveTo.find_last_of("\\/"));//отбрасываем имя файла, получая путь
-                    if (string(buf1) == SaveTo) SaveTo = "";//если работаем просто по имени файла, там же где и программа, то обнуляем путь, так как иначе путем будет название файла
-                    char* where = new char[SaveTo.length() + 1];
-                    strcpy(where, SaveTo.c_str());
- 
-
-                    
-
+                    SaveTo = SaveTo.substr(0, SaveTo.find_last_of("\\/")) + "/";//отбрасываем имя файла, получая путь
+                    if (string(buf1) == SaveTo) SaveTo = "";
+             
                     LoadTextureFromFile(buf1,&my_image_texture,&my_image_width,&my_image_height);
 
                     CVimg = imread(buf1);
                     ClearCVimg = imread(buf1);
+
+                    strcpy(buf1, SaveTo.c_str());
                 }
+
                 else {
                     //если изображение не открылось, то вызывем popup окно об ошибке
                     ImGui::OpenPopup("empty");
@@ -424,14 +443,20 @@ int main(int, char**)
             window_flags |= ImGuiWindowFlags_NoTitleBar;
             window_flags |= ImGuiWindowFlags_NoResize;
             ImGui::SetNextWindowPos(ImVec2(0, 0));
-            ImGui::SetNextWindowSize(ImVec2(my_image_width+my2_image_width, my_image_height + style.WindowPadding.y+35));
-            glfwSetWindowSize(window, my_image_width + my2_image_width, my_image_height + style.WindowPadding.y+25);
-            
+           
+            //если загруженная картинка не влезает на стандартные 1024px, то посчитаем коэффициент на который будем изменять ее размер
+            if (my_image_width > 1024 || my_image_height > 1024) {
+                if (my_image_height > my_image_width) { (float) koef = (float)my_image_height / 1024.0; }
+                else { koef = (float)(my_image_width / 1024.0); }
+            }
+
+            ImGui::SetNextWindowSize(ImVec2((my_image_width + my2_image_width)/koef, height(my_image_height, my2_image_height, koef) + style.WindowPadding.y+55));
+            glfwSetWindowSize(window, (my_image_width + my2_image_width )/koef, height(my_image_height,my2_image_height,koef) + style.WindowPadding.y+55);
 
             ImGui::Begin("OpenGL Texture Text",NULL,window_flags);
 
             //подгружаем изображение где будем нажимать на точки
-            ImGui::Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
+            ImGui::Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width/koef, my_image_height/koef));
 
             //обрабатывем щелчки по изображению слева
             if (ImGui::IsItemClicked())
@@ -441,14 +466,13 @@ int main(int, char**)
                 pos.x -= style.WindowPadding.x;
                 pos.y -= style.WindowPadding.y;
 
-
                 if (click_counter <= 3) {
                     //пишем в массив точек, куда нажали
-                    points[click_counter].x = pos.x;
-                    points[click_counter].y = pos.y;
+                    points[click_counter].x = pos.x*koef;
+                    points[click_counter].y = pos.y*koef;
 
                     //рисуем на месте клика синий кружок
-                    circle(CVimg, Point(pos.x, pos.y), 5, (0, 0, 255), -1);
+                    circle(CVimg, Point(pos.x*koef, pos.y*koef), 5, (0, 0, 255), -1);
 
                     //привязываем к текстуре левого изображения, изображение на котором только что отрисовали точку нажатия
                     BindCVMat2GLTexture(CVimg, my_image_texture);
@@ -473,14 +497,12 @@ int main(int, char**)
 
                         //получаем скорректированное изображение
                         cv::warpPerspective(ClearCVimg, result, getPerspectiveTransform(points, border), Size(500, 500));
-           
 
                         //задаем размер рамки, куда будем выводить изображение
                         my2_image_height = SizeImg;
                         my2_image_width = SizeImg;
 
                         //привязываем результирующее исправленное изображение к текстуре правого изображения
-
                         BindCVMat2GLTexture(result, my2_image_texture);
 
                         glDeleteTextures(1, &my_image_texture);
@@ -496,7 +518,7 @@ int main(int, char**)
 
             //на той же строке выводим текстуру изображения, где будем показывать результат
             ImGui::SameLine();
-            ImGui::Image((void*)(intptr_t)my2_image_texture, ImVec2(my2_image_width, my2_image_height));
+            ImGui::Image((void*)(intptr_t)my2_image_texture, ImVec2(my2_image_width/koef, my2_image_height/koef));
 
             //описываем окно для ввода пути для сохранения
             if (ImGui::BeginPopupModal("saveLink", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -526,11 +548,12 @@ int main(int, char**)
 
             //сохранение в то же место, откуда открывали изображение
             if (ImGui::Button("Save")) {
-                std::string SaveTo(buf1);
-                char* where = new char[SaveTo.length() + 1];
-                strcpy(where, SaveTo.c_str());
+                //std::string SaveTo(buf1);
+                //SaveTo = SaveTo.substr(0, SaveTo.find_last_of("\\/")) + "/";//отбрасываем имя файла, получая путь
+                //char* where = new char[SaveTo.length() + 1];
+                //strcpy(where, SaveTo.c_str());
 
-                Save(where, result, save_counter);
+                Save(buf1, result, save_counter);
             }
             
 
@@ -549,9 +572,12 @@ int main(int, char**)
                 glDeleteTextures(1, &my_image_texture);
                 glDeleteTextures(1, &my2_image_texture);
 
+                koef = 1; 
+
                 my2_image_height = 0; 
                 my2_image_width = 0;
             }
+
             ImGui::SameLine();
             if (ImGui::Button("Choose a path")) {
                 ImGui::OpenPopup("saveLink");

@@ -70,11 +70,17 @@
       <Filter>sources</Filter>
     </ClInclude>
     <ClInclude Include="main.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.txt" />
     <None Include="..\..\misc\natvis\imgui.natvis">
       <Filter>sources</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\icon.ico">
+      <Filter>sources</Filter>
+    </Image>
   </ItemGroup>
 </Project>
